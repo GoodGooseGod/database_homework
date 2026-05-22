@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 
-from database.database_manager import DatabaseManager
+from api.customers_route import router as customer_router
+from api.products_route import router as products_router
+from api.orders_route import router as orders_router
+
 
 api = FastAPI()
-db_manager = DatabaseManager()
+api.include_router(customer_router)
+api.include_router(products_router)
+api.include_router(orders_router)
 
-
-@api.get('/')
-async def index():
-    return 'Test'

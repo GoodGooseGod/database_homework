@@ -21,7 +21,7 @@ class Customers(Base):
     register_customer_number: Mapped[int] = mapped_column(INTEGER(11, unsigned=True), primary_key=True)
     customer_name: Mapped[str] = mapped_column(VARCHAR(30))
     address: Mapped[str] = mapped_column(VARCHAR(40))
-    customer_type: Mapped[bool] = mapped_column(TINYINT(1))
+    customer_type: Mapped[int] = mapped_column(TINYINT(1))
 
 
 class Products(Base):

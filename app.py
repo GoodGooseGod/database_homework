@@ -2,10 +2,8 @@ from tkinter import *
 
 import uvicorn
 
-from config import DBPATH
-from sqlalchemy.ext.asyncio import create_async_engine
-from database.database_manager import DatabaseManager
 from api.api_manager import api
+from requests import request
 
 
 class App:

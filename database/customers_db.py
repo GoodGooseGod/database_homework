@@ -8,7 +8,7 @@ class CustomersDB(DataBase):
         'register_customer_number': lambda x: isinstance(x, int) and 0 < x < 10**11,
         'customer_name': lambda x: isinstance(x, str) and len(x) <= 30,
         'address': lambda x: isinstance(x, str) and len(x) <= 40,
-        'customer_type': lambda x: isinstance(x, bool),
+        'customer_type': lambda x: isinstance(x, int) and x < 10,
     }
 
     @staticmethod

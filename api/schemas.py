@@ -7,7 +7,7 @@ class CustomerCreate(BaseModel):
     register_customer_number: int
     customer_name: str
     address: str
-    customer_type: bool
+    customer_type: int
 
 
 class ProductCreate(BaseModel):
@@ -30,7 +30,7 @@ class OrderCreate(BaseModel):
 class CustomerUpdate(BaseModel):
     customer_name: Optional[str] = None
     address: Optional[str] = None
-    customer_type: Optional[bool] = None
+    customer_type: Optional[int] = None
 
 
 class ProductUpdate(BaseModel):
@@ -51,7 +51,7 @@ class CustomerResponse(BaseModel):
     register_customer_number: int
     customer_name: str
     address: str
-    customer_type: bool
+    customer_type: int
 
     model_config = {
         "from_attributes": True
