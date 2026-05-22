@@ -1,4 +1,4 @@
-from sqlalchemy import Select, Insert, Delete, Update, select, insert, update, delete
+from sqlalchemy import ClauseElement, select, insert, update, delete
 from datetime import date
 
 from .models import Products, DataBase
@@ -6,7 +6,6 @@ from .models import Products, DataBase
 
 class ProductsDB(DataBase):
     correct_types = {
-        'id': lambda x: isinstance(x, int) and 0 < x < 10 ** 13,
         'barcode ': lambda x: isinstance(x, int) and 0 < x < 10 ** 13,
         'product_name': lambda x: isinstance(x, str) and len(x) <= 30,
         'category': lambda x: isinstance(x, int) and 0 <= x < 10,
@@ -16,15 +15,15 @@ class ProductsDB(DataBase):
     }
 
     @staticmethod
-    def select_all() -> Select:
+    def select_all() -> ClauseElement:
         return select(Products)
 
     @staticmethod
-    def select_by_id(id: int, order_date=None) -> Select:
-        return select(Products).where(Products.barcode == id)
+    def select_by_id(barcode: int, order_date=None) -> ClauseElement:
+        return select(Products).where(Products.barcode == barcode)
 
     @classmethod
-    def insert_by_id(cls, id: int, order_date=None, **kwargs) -> Insert:
+    def insert_by_id(cls, barcode: int, order_date=None, **kwargs) -> ClauseElement:
         for key, value in kwargs.items():
             if not cls.correct_types[key](value):
                 raise Exception('Неверные данные при добавлении строки в базу данных')
@@ -32,19 +31,19 @@ class ProductsDB(DataBase):
         if kwargs.get('barcode'):
             id = kwargs.get('barcode')
 
-        return insert(Products).values(barcode=id, **kwargs)
+        return insert(Products).values(barcode=barcode, **kwargs)
 
     @classmethod
-    def update_by_id(cls, id: int, order_date=None, **kwargs) -> Update:
+    def update_by_id(cls, barcode: int, order_date=None, **kwargs) -> ClauseElement:
         for key, value in kwargs.items():
             if not cls.correct_types[key](value):
                 raise Exception('Неверные данные при обновлении строки в базе данных')
 
         if kwargs.get('barcode'):
-            id = kwargs.get('barcode')
+            barcode = kwargs.get('barcode')
 
-        return update(Products).where(Products.barcode == id).values(**kwargs)
+        return update(Products).where(Products.barcode == barcode).values(**kwargs)
 
     @staticmethod
-    def delete_by_id(id: int, order_date=None) -> Delete:
-        return delete(Products).where(Products.barcode == id)
+    def delete_by_id(barcode: int, order_date=None) -> ClauseElement:
+        return delete(Products).where(Products.barcode == barcode)

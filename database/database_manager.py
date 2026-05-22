@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, engine
 from datetime import date
 
 
-from models import DataBase
+from .models import DataBase
 from .customers_db import CustomersDB
 from .products_db import  ProductsDB
 from .orders_db import OrdersDB
