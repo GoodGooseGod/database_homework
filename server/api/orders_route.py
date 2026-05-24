@@ -21,12 +21,12 @@ def orders_router(db_manager) -> APIRouter:
         return await db_manager.get_all('orders')
 
 
-    @router.get('/{order_number}/{order_date}', response_model=OrderResponse)
+    @router.get('/{order_date}/{order_number}', response_model=OrderResponse)
     async def get_order_by_num_and_date(order_number: int, order_date: date) -> OrderResponse:
         order = await db_manager.get_one(
             'orders',
-            order_number,
-            order_date
+            order_number=order_number,
+            order_date=order_date,
         )
 
         if order is None:
@@ -38,25 +38,23 @@ def orders_router(db_manager) -> APIRouter:
     async def create_order(order: OrderCreate) -> OrderResponse:
         await db_manager.put(
             'orders',
-            id=order.order_number,
-            order_date=order.order_date,
             **order.model_dump()
         )
         created_order = await db_manager.get_one(
             'orders',
-            order.order_number,
-            order.order_date,
+            order_number=order.order_number,
+            order_date=order.order_date,
         )
 
         return created_order
 
 
-    @router.put('/{order_number}/{order_date}', response_model=OrderResponse)
+    @router.put('/{order_date}/{order_number}', response_model=OrderResponse)
     async def update_order(order_number: int, order_date: date, order: OrderUpdate) -> OrderResponse:
         existing_order = await db_manager.get_one(
             'orders',
-            order_number,
-            order_date
+            order_number=order_number,
+            order_date=order_date
         )
 
         if existing_order is None:
@@ -67,24 +65,24 @@ def orders_router(db_manager) -> APIRouter:
 
         await db_manager.update(
             'orders',
-            id=order_number,
+            order_number=order_number,
             order_date=order_date,
             **order.model_dump(exclude_unset=True)
         )
         updated_order = await db_manager.get_one(
             'orders',
-            order_number,
-            order_date,
+            order_number=order_number,
+            order_date=order_date,
         )
         return updated_order
 
 
-    @router.delete('/{order_number}/{order_date}', status_code=204)
+    @router.delete('/{order_date}/{order_number}', status_code=204)
     async def delete_order(order_number: int, order_date: date):
         existing_order = await db_manager.get_one(
             'orders',
-            order_number,
-            order_date,
+            order_number=order_number,
+            order_date=order_date,
         )
 
         if existing_order is None:
@@ -95,7 +93,7 @@ def orders_router(db_manager) -> APIRouter:
 
         await db_manager.delete(
             'orders',
-            id=order_number,
+            order_number=order_number,
             order_date=order_date,
         )
 

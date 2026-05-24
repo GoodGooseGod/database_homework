@@ -32,13 +32,10 @@ class DatabaseManager:
             res = await session.execute(stmt)
             return res.scalars().all()
 
-    async def get_one(self, database: str, id: int, order_date: date = None):
+    async def get_one(self, database: str, **kwargs):
         db = self.select_db(database)
         async with self.session_maker() as session:
-            if order_date is None:
-                stmt = db.select_by_id(id)
-            else:
-                stmt = db.select_by_id(id, order_date)
+            stmt = db.select_by_id(**kwargs)
 
             res = await session.execute(stmt)
             return res.scalar_one_or_none()

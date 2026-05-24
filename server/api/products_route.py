@@ -24,7 +24,7 @@ def products_router(db_manager) -> APIRouter:
     async def get_product_by_barcode(barcode: int) -> ProductResponse:
         product = await db_manager.get_one(
             'products',
-            barcode
+            barcode=barcode
         )
 
         if product is None:
@@ -36,12 +36,11 @@ def products_router(db_manager) -> APIRouter:
     async def create_product(product: ProductCreate) -> ProductResponse:
         await db_manager.put(
             'products',
-            id=product.barcode,
             **product.model_dump()
         )
         created_product = await db_manager.get_one(
             'products',
-            product.barcode
+            barcode=product.barcode
         )
 
         return created_product
@@ -51,7 +50,7 @@ def products_router(db_manager) -> APIRouter:
     async def update_product(barcode: int, product: ProductUpdate) -> ProductResponse:
         existing_product = await db_manager.get_one(
             'products',
-            barcode
+            barcode=barcode
         )
 
         if existing_product is None:
@@ -62,12 +61,12 @@ def products_router(db_manager) -> APIRouter:
 
         await db_manager.update(
             'products',
-            id=barcode,
+            barcode=barcode,
             **product.model_dump(exclude_unset=True)
         )
         updated_product = await db_manager.get_one(
             'products',
-            barcode
+            barcode=barcode
         )
         return updated_product
 
@@ -76,7 +75,7 @@ def products_router(db_manager) -> APIRouter:
     async def delete_product(barcode: int):
         existing_product = await db_manager.get_one(
             'products',
-            barcode
+            barcode=barcode
         )
 
         if existing_product is None:
@@ -87,7 +86,7 @@ def products_router(db_manager) -> APIRouter:
 
         await db_manager.delete(
             'products',
-            id=barcode
+            barcode=barcode
         )
 
     return router

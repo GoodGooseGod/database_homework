@@ -24,7 +24,7 @@ def customers_router(db_manager) -> APIRouter:
     async def get_customer_by_reg_num(register_customer_number: int) -> CustomerResponse:
         customer = await db_manager.get_one(
             'customers',
-            register_customer_number
+            register_customer_number=register_customer_number
         )
 
         if customer is None:
@@ -36,12 +36,11 @@ def customers_router(db_manager) -> APIRouter:
     async def create_customer(customer: CustomerCreate) -> CustomerResponse:
         await db_manager.put(
             'customers',
-            id=customer.register_customer_number,
             **customer.model_dump()
         )
         created_customer = await db_manager.get_one(
             'customers',
-            customer.register_customer_number
+            register_customer_number=customer.register_customer_number
         )
 
         return created_customer
@@ -51,7 +50,7 @@ def customers_router(db_manager) -> APIRouter:
     async def update_customer(register_customer_number: int, customer: CustomerUpdate) -> CustomerResponse:
         existing_customer = await db_manager.get_one(
             'customers',
-            register_customer_number
+            register_customer_number=register_customer_number
         )
 
         if existing_customer is None:
@@ -62,12 +61,12 @@ def customers_router(db_manager) -> APIRouter:
 
         await db_manager.update(
             'customers',
-            id=register_customer_number,
+            register_customer_number=register_customer_number,
             **customer.model_dump(exclude_unset=True)
         )
         updated_customer = await db_manager.get_one(
             'customers',
-            register_customer_number
+            register_customer_number=register_customer_number
         )
         return updated_customer
 
@@ -76,7 +75,7 @@ def customers_router(db_manager) -> APIRouter:
     async def delete_customer(register_customer_number: int):
         existing_customer = await db_manager.get_one(
             'customers',
-            register_customer_number
+            register_customer_number=register_customer_number
         )
 
         if existing_customer is None:
@@ -87,7 +86,7 @@ def customers_router(db_manager) -> APIRouter:
 
         await db_manager.delete(
             'customers',
-            id=register_customer_number
+            register_customer_number=register_customer_number
         )
 
     return router
