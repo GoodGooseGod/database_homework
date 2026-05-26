@@ -15,7 +15,7 @@ class ProductsAPI:
         response.raise_for_status()
         return response.json()
 
-    def create_product(self, data: dict):
+    def create_product(self, **data):
         response = requests.post(
             f'{self.base_url}/products/',
             json=data
@@ -23,7 +23,7 @@ class ProductsAPI:
         response.raise_for_status()
         return response.json()
 
-    def update_product(self, barcode: int, data: dict):
+    def update_product(self, barcode: int, **data):
         response = requests.put(
             f'{self.base_url}/products/{barcode}',
             json=data

@@ -16,7 +16,7 @@ class OrdersAPI:
         response.raise_for_status()
         return response.json()
 
-    def create_order(self, data: dict):
+    def create_order(self, **data):
         response = requests.post(
             f'{self.base_url}/orders/',
             json=data
@@ -24,7 +24,7 @@ class OrdersAPI:
         response.raise_for_status()
         return response.json()
 
-    def update_order(self, order_date: date, order_number: int, data: dict):
+    def update_order(self, order_date: date, order_number: int, **data):
         response = requests.put(
             f'{self.base_url}/orders/{order_date}/{order_number}',
             json=data

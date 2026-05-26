@@ -15,7 +15,7 @@ class CustomersAPI:
         response.raise_for_status()
         return response.json()
 
-    def create_customer(self, data: dict):
+    def create_customer(self, **data):
         response = requests.post(
             f'{self.base_url}/customers/',
             json=data
@@ -23,7 +23,7 @@ class CustomersAPI:
         response.raise_for_status()
         return response.json()
 
-    def update_customer(self, register_customer_number: int, data: dict):
+    def update_customer(self, register_customer_number: int, **data):
         response = requests.put(
             f'{self.base_url}/customers/{register_customer_number}',
             json=data
